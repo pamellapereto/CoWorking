@@ -4,11 +4,18 @@ import javax.swing.JDialog;
 
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.Connection;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import java.awt.Rectangle;
 import javax.swing.SwingConstants;
+
+import model.DAO;
+
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Cursor;
@@ -19,6 +26,12 @@ public class Login extends JDialog {
 	private JPasswordField inputSenha;
 
 	public Login() {
+		addWindowListener(new WindowAdapter() {
+			public void windowActivated(WindowEvent e) {
+				statusConexaoBanco();
+			}
+		});
+		
 		setTitle("Login");
 		setResizable(false);
 		setBounds(new Rectangle(0, 0, 441, 305));
@@ -56,13 +69,37 @@ public class Login extends JDialog {
 		tituloLogin.setBounds(0, 27, 424, 20);
 		getContentPane().add(tituloLogin);
 		
-		JLabel imgDatabase = new JLabel("");
-		imgDatabase.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOff.png")));
-		imgDatabase.setBounds(20, 205, 56, 50);
-		getContentPane().add(imgDatabase);
+		imgDatabase_1 = new JLabel("");
+		imgDatabase_1.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOff.png")));
+		imgDatabase_1.setBounds(20, 205, 56, 50);
+		getContentPane().add(imgDatabase_1);
 
 	}
+	
+	DAO dao = new DAO();
+	private JLabel imgDatabase_1;
 
+	private void statusConexaoBanco() {
+		try {
+			Connection conexaoBanco = dao.conectar();
+			
+			if (conexaoBanco == null) {
+				//Escolher a imagem para quando não há conexão
+				imgDatabase_1.setIcon(new ImageIcon (Login.class.getResource("/img/databaseOff.png")));
+			}
+			
+			else {
+				//Trocar a imagem se houver conexão
+				imgDatabase_1.setIcon(new ImageIcon (Login.class.getResource("/img/databaseOn.png")));
+			}
+			conexaoBanco.close();
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
