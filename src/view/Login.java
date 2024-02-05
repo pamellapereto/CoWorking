@@ -14,6 +14,8 @@ import javax.swing.JPasswordField;
 import java.awt.Rectangle;
 import javax.swing.SwingConstants;
 
+import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
+
 import model.DAO;
 
 import javax.swing.JButton;
@@ -24,14 +26,16 @@ import javax.swing.ImageIcon;
 public class Login extends JDialog {
 	private JTextField inputLogin;
 	private JPasswordField inputSenha;
+	private JLabel imgDatabase;
 
 	public Login() {
+
 		addWindowListener(new WindowAdapter() {
 			public void windowActivated(WindowEvent e) {
 				statusConexaoBanco();
 			}
 		});
-		
+
 		setTitle("Login");
 		setResizable(false);
 		setBounds(new Rectangle(0, 0, 441, 305));
@@ -56,49 +60,67 @@ public class Login extends JDialog {
 		inputSenha = new JPasswordField();
 		inputSenha.setBounds(132, 127, 195, 20);
 		getContentPane().add(inputSenha);
-		
+
 		JButton btnLogin = new JButton("Entrar");
 		btnLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnLogin.setBounds(181, 186, 89, 23);
 		getContentPane().add(btnLogin);
-		
+
 		JLabel tituloLogin = new JLabel("Acessar conta");
 		tituloLogin.setFont(new Font("Tahoma", Font.BOLD, 14));
 		tituloLogin.setHorizontalAlignment(SwingConstants.CENTER);
 		tituloLogin.setBounds(0, 27, 424, 20);
 		getContentPane().add(tituloLogin);
-		
-		imgDatabase_1 = new JLabel("");
-		imgDatabase_1.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOff.png")));
-		imgDatabase_1.setBounds(20, 205, 56, 50);
-		getContentPane().add(imgDatabase_1);
 
+		imgDatabase = new JLabel("");
+		imgDatabase.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOff.png")));
+		imgDatabase.setBounds(10, 171, 46, 95);
+		getContentPane().add(imgDatabase);
 	}
-	
+
 	DAO dao = new DAO();
-	private JLabel imgDatabase_1;
 
 	private void statusConexaoBanco() {
 		try {
 			Connection conexaoBanco = dao.conectar();
-			
+
 			if (conexaoBanco == null) {
-				//Escolher a imagem para quando não há conexão
-				imgDatabase_1.setIcon(new ImageIcon (Login.class.getResource("/img/databaseOff.png")));
+				// Escolher a imagem para quando não há conexão
+				imgDatabase.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOff.png")));
 			}
-			
+
 			else {
-				//Trocar a imagem se houver conexão
-				imgDatabase_1.setIcon(new ImageIcon (Login.class.getResource("/img/databaseOn.png")));
+				// Trocar a imagem se houver conexão
+				imgDatabase.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOn.png")));
 			}
 			conexaoBanco.close();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println(e);
 		}
 	}
 
+	private void logar() {
+		String read = "select * from funcionario where login=? and senha=md5(?)";
+
+		
+		try {
+
+		}
+
+		catch (Exception e) {
+			System.out.println(e);
+		}
+		
+	}
+	
+	
+	
+	
+
+	
+	
+	
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
