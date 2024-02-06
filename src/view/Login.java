@@ -28,9 +28,6 @@ import java.awt.Cursor;
 import javax.swing.ImageIcon;
 
 public class Login extends JDialog {
-	private JTextField inputLogin;
-	private JPasswordField inputSenha;
-	private JLabel imgDatabase;
 
 	public Login() {
 
@@ -71,6 +68,12 @@ public class Login extends JDialog {
 		btnLogin.setBounds(181, 186, 89, 23);
 		getContentPane().add(btnLogin);
 
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				logar();
+			}
+		});
+
 		JLabel tituloLogin = new JLabel("Acessar conta");
 		tituloLogin.setFont(new Font("Tahoma", Font.BOLD, 14));
 		tituloLogin.setHorizontalAlignment(SwingConstants.CENTER);
@@ -84,6 +87,9 @@ public class Login extends JDialog {
 	}
 
 	DAO dao = new DAO();
+	private JTextField inputLogin;
+	private JPasswordField inputSenha;
+	private JLabel imgDatabase;
 
 	private void statusConexaoBanco() {
 		try {
@@ -99,7 +105,9 @@ public class Login extends JDialog {
 				imgDatabase.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOn.png")));
 			}
 			conexaoBanco.close();
-		} catch (Exception e) {
+		}
+
+		catch (Exception e) {
 			System.out.println(e);
 		}
 	}
@@ -126,9 +134,8 @@ public class Login extends JDialog {
 			// Validação do funcionário (autenticação)
 			// resultadoExecucao.next() significa que o login e a senha existem, ou seja,
 			// correspondem
-
 			if (resultadoExecucao.next()) {
-
+				System.out.println("Você logou!");
 			}
 		}
 
