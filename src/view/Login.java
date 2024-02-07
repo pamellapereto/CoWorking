@@ -136,8 +136,13 @@ public class Login extends JDialog {
 			// resultadoExecucao.next() significa que o login e a senha existem, ou seja,
 			// correspondem
 			if (resultadoExecucao.next()) {
+			
 				Home home = new Home();
-				home.setVisible(true);
+				home.setVisible(true);		
+			}
+			
+			else {
+				System.out.println("Login e/ou senha inválidos");
 			}
 		}
 
