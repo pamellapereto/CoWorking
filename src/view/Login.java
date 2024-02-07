@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.security.Principal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -135,7 +136,8 @@ public class Login extends JDialog {
 			// resultadoExecucao.next() significa que o login e a senha existem, ou seja,
 			// correspondem
 			if (resultadoExecucao.next()) {
-				System.out.println("Você logou!");
+				Home home = new Home();
+				home.setVisible(true);
 			}
 		}
 
