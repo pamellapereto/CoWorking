@@ -6,14 +6,33 @@ import javax.swing.JDialog;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Cursor;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 public class Home extends JDialog {
+	
+	public JPanel panelUsuario;
+	public JLabel txtUsuarioLogado;
+	public JLabel txtData;
+	
 	//Construtor
 	public Home() {
+		addWindowListener (new WindowAdapter() {
+			public void windowActivated(WindowEvent e) {
+				Date dataSistema = new Date();
+				DateFormat formatadorData = DateFormat.getDateInstance(DateFormat.FULL);
+				txtData.setText(formatadorData.format(dataSistema));
+			}
+		});
+
 		setTitle("Home");
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Home.class.getResource("/img/logo.png")));
@@ -54,6 +73,19 @@ public class Home extends JDialog {
 		btnReserve.setIcon(new ImageIcon(Home.class.getResource("/img/reserve.png")));
 		btnReserve.setBounds(387, 101, 96, 96);
 		getContentPane().add(btnReserve);
+		
+		panelUsuario = new JPanel();
+		panelUsuario.setBounds(0, 264, 597, 60);
+		getContentPane().add(panelUsuario);
+		panelUsuario.setLayout(null);
+		
+		txtUsuarioLogado = new JLabel("");
+		txtUsuarioLogado.setBounds(10, 18, 157, 21);
+		panelUsuario.add(txtUsuarioLogado);
+		
+		txtData = new JLabel("");
+		txtData.setBounds(352, 18, 235, 21);
+		panelUsuario.add(txtData);
 		
 		btnReserve.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

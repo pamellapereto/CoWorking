@@ -153,7 +153,10 @@ public class Login extends JDialog {
 
 					Home home = new Home();
 					home.setVisible(true);
-
+					
+					home.txtUsuarioLogado.setText("Usuário: " + resultadoExecucao.getString(2));
+					
+					
 					// Fechar a janela de Login assim que a janela Home abrir (automaticamente)
 					dispose();
 				}
