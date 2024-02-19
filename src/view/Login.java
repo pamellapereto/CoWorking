@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 
 import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
 
+import Atxy2k.CustomTextField.RestrictedTextField;
 import model.DAO;
 
 import javax.swing.JButton;
@@ -85,6 +86,30 @@ public class Login extends JDialog {
 		imgDatabase.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOff.png")));
 		imgDatabase.setBounds(10, 171, 46, 95);
 		getContentPane().add(imgDatabase);
+
+		// Acessar o botão "Entrar" com a tecla "Enter"
+		getRootPane().setDefaultButton(btnLogin);
+
+		// Validação dos campos utilizando a biblioteca Atxy2k
+		// Validação do campo inputLogin
+		RestrictedTextField validarLogin = new RestrictedTextField(inputLogin,
+				"abcdefghijklmnopqrstuvwxyz0123456789_-.");
+
+		// Determinar o uso de alguns caracteres especiais (_ - .) e alfanuméricos
+		validarLogin.setOnlyCustomCharacters(true);
+
+		// Limitar a somente 20 caracteres no campo login
+		validarLogin.setLimit(20);
+
+		// Validação do campo inputSenha
+		RestrictedTextField validarSenha = new RestrictedTextField(inputSenha);
+
+		// Limitar a somente 15 caracteres no campo senha
+		validarSenha.setLimit(15);
+
+		// Desativar a tecla espaço no campo senha (FALTA FAZER!)
+		
+		
 	}
 
 	DAO dao = new DAO();
@@ -153,9 +178,10 @@ public class Login extends JDialog {
 
 					Home home = new Home();
 					home.setVisible(true);
-					
+
 					home.txtUsuarioLogado.setText("Usuário: " + resultadoExecucao.getString(2));
-					
+					home.txtPerfilLogado.setText("Perfil: " + resultadoExecucao.getString(5));
+
 					
 					// Fechar a janela de Login assim que a janela Home abrir (automaticamente)
 					dispose();
