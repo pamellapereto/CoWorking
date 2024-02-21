@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import java.awt.Cursor;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import java.awt.Color;
 
 public class Home extends JDialog {
 	
@@ -41,6 +42,7 @@ public class Home extends JDialog {
 		getContentPane().setLayout(null);
 		
 		JButton btnUser = new JButton("");
+		btnUser.setBackground(new Color(240, 240, 240));
 		btnUser.setBorderPainted(false);
 		btnUser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnUser.setIcon(new ImageIcon(Home.class.getResource("/img/user.png")));
@@ -55,6 +57,7 @@ public class Home extends JDialog {
 		});
 		
 		JButton btnRoom = new JButton("");
+		btnRoom.setBackground(new Color(240, 240, 240));
 		btnRoom.setBorderPainted(false);
 		btnRoom.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRoom.setIcon(new ImageIcon(Home.class.getResource("/img/room.png")));
@@ -69,6 +72,7 @@ public class Home extends JDialog {
 		});
 		
 		JButton btnReserve = new JButton("");
+		btnReserve.setBackground(new Color(240, 240, 240));
 		btnReserve.setBorderPainted(false);
 		btnReserve.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnReserve.setIcon(new ImageIcon(Home.class.getResource("/img/reserve.png")));
