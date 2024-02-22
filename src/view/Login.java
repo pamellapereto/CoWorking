@@ -75,6 +75,7 @@ public class Login extends JDialog {
 				logar();
 			}
 		});
+		
 
 		JLabel tituloLogin = new JLabel("Acessar conta");
 		tituloLogin.setFont(new Font("Tahoma", Font.BOLD, 14));
