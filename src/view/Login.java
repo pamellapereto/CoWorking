@@ -75,7 +75,6 @@ public class Login extends JDialog {
 				logar();
 			}
 		});
-		
 
 		JLabel tituloLogin = new JLabel("Acessar conta");
 		tituloLogin.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -109,8 +108,7 @@ public class Login extends JDialog {
 		validarSenha.setLimit(15);
 
 		// Desativar a tecla espaço no campo senha (FALTA FAZER!)
-		
-		
+
 	}
 
 	DAO dao = new DAO();
@@ -183,7 +181,6 @@ public class Login extends JDialog {
 					home.txtUsuarioLogado.setText("Usuário: " + resultadoExecucao.getString(2));
 					home.txtPerfilLogado.setText("Perfil: " + resultadoExecucao.getString(5));
 
-					
 					// Fechar a janela de Login assim que a janela Home abrir (automaticamente)
 					dispose();
 				}
