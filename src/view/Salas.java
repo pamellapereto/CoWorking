@@ -105,14 +105,12 @@ public class Salas extends JDialog {
 		imgDelete.setIcon(new ImageIcon(Salas.class.getResource("/img/delete.png")));
 		imgDelete.setBounds(581, 342, 65, 54);
 		getContentPane().add(imgDelete);
-		
-		
+
 		imgDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				deletarSala();
 			}
 		});
-		
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(95, 54, 516, 90);
@@ -135,9 +133,6 @@ public class Salas extends JDialog {
 		getContentPane().add(inputID);
 		inputID.setColumns(10);
 
-		
-		
-		
 		// Deixar o campo ID invisível
 		inputID.setVisible(false);
 
@@ -148,7 +143,6 @@ public class Salas extends JDialog {
 		inputCategoria.setBounds(95, 25, 516, 22);
 		getContentPane().add(inputCategoria);
 
-		
 		inputCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				buscarSalaNaTabela();
@@ -253,7 +247,14 @@ public class Salas extends JDialog {
 
 				JOptionPane.showMessageDialog(null, "Sala cadastrada com sucesso!");
 				limparCampos();
-				((DefaultTableModel)tblSalas.getModel()).setRowCount(0);
+
+				String readTabela = "select tipoSala as Categoria, andarSala as Andar, numeroSala as Número from salas where tipoSala = ?;";
+				PreparedStatement executarReadSQL = conexaoBanco.prepareStatement(readTabela);
+				executarReadSQL.setString(1, inputCategoria.getSelectedItem().toString());
+				ResultSet resultadoExecucao = executarReadSQL.executeQuery();
+				tblSalas.setModel(DbUtils.resultSetToTableModel(resultadoExecucao));
+
+				// ((DefaultTableModel) tblSalas.getModel()).setRowCount(0);
 
 				conexaoBanco.close();
 			}
@@ -302,15 +303,14 @@ public class Salas extends JDialog {
 		int setarLinha = tblSalas.getSelectedRow();
 
 		inputCategoria.setSelectedItem(tblSalas.getModel().getValueAt(setarLinha, 0).toString());
-		
-		//Setar o andar e o número da sala selecionada na linha específica da tabela que o usuário clicou
+
+		// Setar o andar e o número da sala selecionada na linha específica da tabela
+		// que o usuário clicou
 		inputAndar.setSelectedItem(tblSalas.getModel().getValueAt(setarLinha, 1).toString());
-		
+
 		inputNum.setText(tblSalas.getModel().getValueAt(setarLinha, 2).toString());
 	}
 
-	
-	
 	// Criar método para buscar sala pelo botão Pesquisar
 	private void btnBuscarSala() {
 		String readBtn = "select * from salas where numeroSala = ? and andarSala = ?;";
@@ -334,11 +334,10 @@ public class Salas extends JDialog {
 			if (resultadoExecucao.next()) {
 				// Preencher os campos do formulário
 				inputID.setText(resultadoExecucao.getString(1));
-				//inputAndar.setSelectedItem(resultadoExecucao.getString(2));
+				// inputAndar.setSelectedItem(resultadoExecucao.getString(2));
 				inputCod.setSelectedItem(resultadoExecucao.getString(5));
 				inputOcup.setText(resultadoExecucao.getString(6));
-				
-				
+
 				imgUpdate.setEnabled(true);
 				imgDelete.setEnabled(true);
 				imgCreate.setEnabled(false);
@@ -424,31 +423,39 @@ public class Salas extends JDialog {
 
 	private void deletarSala() {
 		String delete = "delete from salas where numeroSala = ? and andarSala = ?;";
-		
+
 		try {
 			Connection conexaoBanco = dao.conectar();
-			
+
 			PreparedStatement executarSQL = conexaoBanco.prepareStatement(delete);
-			
+
 			executarSQL.setString(1, inputNum.getText());
 			executarSQL.setString(2, inputAndar.getSelectedItem().toString());
-			
+
 			executarSQL.executeUpdate();
-			
+
 			JOptionPane.showMessageDialog(null, "Sala deletada com sucesso!");
-			
+
 			limparCampos();
-			((DefaultTableModel)tblSalas.getModel()).setRowCount(0);
+
+			DefaultTableModel designTabela = (DefaultTableModel) tblSalas.getModel();
+
+			// Índice da linha que deseja excluir
+			int posicaoLinha = 0;
+
+			if (posicaoLinha >= 0 && posicaoLinha < designTabela.getRowCount()) {
+				designTabela.removeRow(posicaoLinha);
+			}
+
 			conexaoBanco.close();
-			
-		} 
-		catch (Exception e) {
+
+		} catch (Exception e) {
 			System.out.println(e);
 		}
 	}
 
 	private void limparCampos() {
-		inputCategoria.setSelectedItem(null);
+
 		inputCod.setSelectedItem(null);
 		inputAndar.setSelectedItem(null);
 		inputNum.setText(null);
@@ -456,7 +463,7 @@ public class Salas extends JDialog {
 		inputCategoria.requestFocus();
 		imgCreate.setEnabled(true);
 		imgDelete.setEnabled(false);
-	
+
 	}
 
 	public static void main(String[] args) {
