@@ -408,6 +408,12 @@ public class Salas extends JDialog {
 				JOptionPane.showMessageDialog(null, "Dados da sala atualizados com sucesso!");
 				limparCampos();
 
+				String readTabela = "select tipoSala as Categoria, andarSala as Andar, numeroSala as Número from salas where tipoSala = ?;";
+				PreparedStatement executarReadSQL = conexaoBanco.prepareStatement(readTabela);
+				executarReadSQL.setString(1, inputCategoria.getSelectedItem().toString());
+				ResultSet resultadoExecucao = executarReadSQL.executeQuery();
+				tblSalas.setModel(DbUtils.resultSetToTableModel(resultadoExecucao));
+				
 				conexaoBanco.close();
 			}
 
