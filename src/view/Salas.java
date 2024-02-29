@@ -249,9 +249,18 @@ public class Salas extends JDialog {
 				limparCampos();
 
 				String readTabela = "select tipoSala as Categoria, andarSala as Andar, numeroSala as Número from salas where tipoSala = ?;";
-				PreparedStatement executarReadSQL = conexaoBanco.prepareStatement(readTabela);
-				executarReadSQL.setString(1, inputCategoria.getSelectedItem().toString());
-				ResultSet resultadoExecucao = executarReadSQL.executeQuery();
+
+				// Preparar a execução dos comandos SQL
+				PreparedStatement executarLeituraTabela = conexaoBanco.prepareStatement(readTabela);
+
+				// Substituir o ? pelo conteúdo da caixa de texto
+				executarLeituraTabela.setString(1, inputCategoria.getSelectedItem().toString());
+
+				// Executar o comando SQL
+				ResultSet resultadoExecucao = executarLeituraTabela.executeQuery();
+
+				// Exibir o resultado na tabela, utilização da biblioteca rs2xml para "popular"
+				// a tabela
 				tblSalas.setModel(DbUtils.resultSetToTableModel(resultadoExecucao));
 
 				// ((DefaultTableModel) tblSalas.getModel()).setRowCount(0);
@@ -413,7 +422,7 @@ public class Salas extends JDialog {
 				executarReadSQL.setString(1, inputCategoria.getSelectedItem().toString());
 				ResultSet resultadoExecucao = executarReadSQL.executeQuery();
 				tblSalas.setModel(DbUtils.resultSetToTableModel(resultadoExecucao));
-				
+
 				conexaoBanco.close();
 			}
 
